@@ -1163,7 +1163,7 @@ public abstract class EpubMojo
     protected String htmlhelpEncoding;
 
     /**
-     * This image is used on popup annotations as the “x” that the user can click to dismiss the popup.
+     * This image is used on popup annotations as the "x" that the user can click to dismiss the popup.
      * (Original XSL attribuut: <code>annotation.graphic.close</code>.)
      *
      * @parameter
