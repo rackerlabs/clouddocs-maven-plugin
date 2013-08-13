@@ -1,7 +1,7 @@
-Copyright (c) 2010, [NHN Corporation][http://www.nhncorp.com]
+Copyright (c) 2010, NHN Corporation:http://www.nhncorp.com
 with Reserved Font Name Nanum, Naver Nanum, NanumGothic, Naver NanumGothic, NanumMyeongjo, Naver NanumMyeongjo, NanumBrush, Naver NanumBrush, NanumPen, Naver NanumPen, Naver NanumGothicEco, NanumGothicEco, Naver NanumMyeongjoEco, NanumMyeongjoEco, Naver NanumGothicLight, NanumGothicLight
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
-This license is copied below, and is also available with a FAQ at: [http://scripts.sil.org/OFL][http://scripts.sil.org/OFL]
+This license is copied below, and is also available with a FAQ at: http://scripts.sil.org/OFL
 SIL OPEN FONT LICENSE
 Version 1.1 - 26 February 2007
 
@@ -39,4 +39,4 @@ This license becomes null and void if any of the above conditions are not met.
 THE FONT SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM OTHER DEALINGS IN THE FONT SOFTWARE.
 
 
-By [naver help][http://help.naver.com/ops/step2/faq.nhn?faqId=15879]
+By naver help:http://help.naver.com/ops/step2/faq.nhn?faqId=15879
