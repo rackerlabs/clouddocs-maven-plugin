@@ -31,6 +31,8 @@
     <xsl:choose>
       <xsl:when test="starts-with(/*/@xml:lang, 'zh')">AR-PL-New-Sung</xsl:when>
       <xsl:when test="starts-with(/*/@xml:lang, 'ja')">TakaoGothic</xsl:when>
+      <xsl:when test="starts-with(/*/@xml:lang, 'ko')">NanumGothic</xsl:when>
+      <xsl:when test="starts-with(/*/@xml:lang, 'ko_KR')">NanumGothic</xsl:when>
       <xsl:otherwise>CartoGothic Std</xsl:otherwise>
     </xsl:choose>
   </xsl:param>
@@ -39,6 +41,8 @@
     <xsl:choose>
       <xsl:when test="starts-with(/*/@xml:lang, 'zh')">AR-PL-New-Sung</xsl:when>
       <xsl:when test="starts-with(/*/@xml:lang, 'ja')">TakaoGothic</xsl:when>
+      <xsl:when test="starts-with(/*/@xml:lang, 'ko')">NanumGothicCoding</xsl:when>
+      <xsl:when test="starts-with(/*/@xml:lang, 'ko_KR')">NanumGothicCoding</xsl:when>
       <xsl:otherwise>monospace</xsl:otherwise>
     </xsl:choose>
   </xsl:param>
