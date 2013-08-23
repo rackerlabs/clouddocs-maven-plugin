@@ -166,11 +166,15 @@ Processing legalnotice: <xsl:value-of select="@role"/>
               trademarks, copyrights, or other intellectual property.
           </d:para>
           <d:para>
-              Rackspace®, Rackspace logo and Fanatical Support® are
-              registered service marks of Rackspace US,
-              Inc. All other product names and trademarks
-              used in this document are for identification purposes
-              only and are property of their respective owners.
+            Rackspace®, Rackspace logo and Fanatical Support® are
+            either registered trademarks or trademarks of
+            Rackspace US, Inc. in the United States and/or other
+            countries. OpenStack is either a registered trademark
+            or trademark of OpenStack, LLC in the United States
+            and/or other countries. All other product names and
+            trademarks in this document are for identification
+            purposes only and are property of their respective
+            owners.
           </d:para>
       </xsl:if>
   </xsl:template>
