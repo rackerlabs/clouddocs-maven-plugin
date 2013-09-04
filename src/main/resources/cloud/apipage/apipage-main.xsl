@@ -277,21 +277,22 @@ function showSelected(selectorId, optionId){
                 <div class="span16">
                   <!-- Don't output if there are no status codes -->
                   <xsl:if test="wadl:response[starts-with(normalize-space(@status),'2') or starts-with(normalize-space(@status),'3')]">
-                    <simpara>
-                      Normal Response Codes:
-                      <xsl:apply-templates select="wadl:response" mode="preprocess-normal"/>
-                    </simpara>
+                    <para>
+                      <b>Normal Response Codes:</b> 
+                        <xsl:apply-templates select="wadl:response" mode="preprocess-normal"/>
+                    </para>
                   </xsl:if>
                   <xsl:if test="wadl:response[not(starts-with(normalize-space(@status),'2') or starts-with(normalize-space(@status),'3'))]">
-                    <simpara>
-                      Error Response Codes:
+                    <para>
+                      <b>Error Response Codes:</b> 
                       <!--
 Put those errors that don't have a set status
 up front. These are typically general errors.
 -->
                       <xsl:apply-templates select="wadl:response[not(@status)]" mode="preprocess-faults"/>
                       <xsl:apply-templates select="wadl:response[@status]" mode="preprocess-faults"/>
-                    </simpara>
+                    </para>
+<para/> 
                   </xsl:if>  
                 </div>
               </div>
@@ -544,5 +545,71 @@ up front. These are typically general errors.
         </xsl:otherwise>
       </xsl:choose>
     </xsl:if>
+  </xsl:template>
+  
+  <xsl:template name="trimUri">
+    <!-- Trims elements -->
+    <xsl:param name="trimCount"/>
+    <xsl:param name="uri"/>
+    <xsl:param name="i">0</xsl:param>
+    <xsl:choose>
+      <xsl:when test="$i &lt; $trimCount and contains($uri,'/')">
+        <xsl:call-template name="trimUri">
+          <xsl:with-param name="i" select="$i + 1"/>
+          <xsl:with-param name="trimCount">
+            <xsl:value-of select="$trimCount"/>
+          </xsl:with-param>
+          <xsl:with-param name="uri">
+            <xsl:value-of select="substring-after($uri,'/')"/>
+          </xsl:with-param>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="concat('/',$uri)"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template name="statusCodeList">
+    <xsl:param name="codes" select="'400 500 &#x2026;'"/>
+    <xsl:param name="separator" select="','"/>
+    <xsl:param name="inError" select="false()"/>
+    <xsl:variable name="code" select="substring-before($codes,' ')"/>
+    <xsl:variable name="nextCodes" select="substring-after($codes,' ')"/>
+    <xsl:choose>
+      <xsl:when test="$code != ''">
+        <xsl:call-template name="statusCode">
+          <xsl:with-param name="code" select="$code"/>
+          <xsl:with-param name="inError" select="$inError"/>
+        </xsl:call-template>
+        <xsl:text>, </xsl:text>
+        <xsl:call-template name="statusCodeList">
+          <xsl:with-param name="codes" select="$nextCodes"/>
+          <xsl:with-param name="separator" select="$separator"/>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:call-template name="statusCode">
+          <xsl:with-param name="code" select="$codes"/>
+          <xsl:with-param name="inError" select="$inError"/>
+        </xsl:call-template>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+  <xsl:template name="statusCode">
+    <xsl:param name="code" select="'200'"/>
+    <xsl:param name="inError" select="false()"/>
+    <xsl:choose>
+      <xsl:when test="$inError">
+        <errorcode>
+          <xsl:value-of select='$code'/>
+        </errorcode>
+      </xsl:when>
+      <xsl:otherwise>
+        <returnvalue>
+          <xsl:value-of select='$code'/>
+        </returnvalue>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
         </xsl:stylesheet>
