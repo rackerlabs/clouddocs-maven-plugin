@@ -258,6 +258,29 @@ function showSelected(selectorId, optionId){
                     select="wadl:doc/d:*[not(@role = 'shortdesc')]|wadl:doc/xhtml:*[not(@role = 'shortdesc')]"/>
                 </xsl:if>
               </div>
+<!-- process response codes -->
+              <div class="row">
+                <div class="span16">
+                  <!-- Don't output if there are no status codes -->
+                  <xsl:if test="wadl:response[starts-with(normalize-space(@status),'2') or starts-with(normalize-space(@status),'3')]">
+                    <simpara>
+                      Normal Response Codes:
+                      <xsl:apply-templates select="wadl:response" mode="preprocess-normal"/>
+                    </simpara>
+                  </xsl:if>
+                  <xsl:if test="wadl:response[not(starts-with(normalize-space(@status),'2') or starts-with(normalize-space(@status),'3'))]">
+                    <simpara>
+                      Error Response Codes:
+                      <!--
+Put those errors that don't have a set status
+up front. These are typically general errors.
+-->
+                      <xsl:apply-templates select="wadl:response[not(@status)]" mode="preprocess-faults"/>
+                      <xsl:apply-templates select="wadl:response[@status]" mode="preprocess-faults"/>
+                    </simpara>
+                  </xsl:if>  
+                </div>
+              </div>
               <div class="row">
                 <div class="span16">
                   <!-- Don't output if there are no params -->
