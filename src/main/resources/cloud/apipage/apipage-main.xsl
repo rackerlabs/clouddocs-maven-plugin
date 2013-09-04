@@ -1,4 +1,18 @@
-        <xsl:stylesheet
+<xsl:stylesheet 
+xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns="http://docbook.org/ns/docbook" 
+xmlns:wadl="http://wadl.dev.java.net/2009/02" 
+xmlns:xhtml="http://www.w3.org/1999/xhtml" 
+xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:d="http://docbook.org/ns/docbook" 
+xmlns:rax="http://docs.rackspace.com/api"
+xmlns:xsdxt="http://docs.rackspacecloud.com/xsd-ext/v1.0" 
+exclude-result-prefixes="xhtml xsdxt rax d wadl" version="2.0">
+  
+  
+
+<!--<xsl:stylesheet
           xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
           xmlns:xhtml="http://www.w3.org/1999/xhtml"
           xmlns:wadl="http://wadl.dev.java.net/2009/02"
@@ -6,7 +20,7 @@
           xmlns:d="http://docbook.org/ns/docbook"
           xmlns:xsdxt="http://docs.rackspacecloud.com/xsd-ext/v1.0" 
           xmlns="http://www.w3.org/1999/xhtml"
-          exclude-result-prefixes="xhtml xsdxt rax d" version="2.0">
+          exclude-result-prefixes="xhtml xsdxt rax d" version="2.0">-->
           
           <xsl:character-map name="comment">
             <xsl:output-character character="«" string="&lt;"/>   
@@ -482,5 +496,53 @@ up front. These are typically general errors.
               <xsl:apply-templates select="@*|node()"/>
             </xsl:copy>
           </xsl:template>
-          
+  <xsl:template match="wadl:response" mode="preprocess-normal">
+    <xsl:variable name="normStatus" select="normalize-space(@status)"/>
+    <xsl:if test="starts-with($normStatus,'2') or starts-with($normStatus,'3')">
+      <xsl:call-template name="statusCodeList">
+        <xsl:with-param name="codes" select="$normStatus"/>
+      </xsl:call-template>
+    </xsl:if>
+  </xsl:template>
+  
+  <xsl:template match="wadl:response" mode="preprocess-faults">
+    <xsl:if
+      test="(not(@status) or not(starts-with(normalize-space(@status),'2') or starts-with(normalize-space(@status),'3')))">
+      <xsl:variable name="codes">
+        <xsl:choose>
+          <xsl:when test="@status">
+            <xsl:value-of select="normalize-space(@status)"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="'400 500 &#x2026;'"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <xsl:choose>
+        <xsl:when test="wadl:representation/@element">
+          <xsl:value-of select="substring-after((wadl:representation/@element)[1],':')"/>
+          <xsl:text> (</xsl:text>
+          <xsl:call-template name="statusCodeList">
+            <xsl:with-param name="codes" select="$codes"/>
+            <xsl:with-param name="inError" select="true()"/>
+          </xsl:call-template>
+          <xsl:text>)</xsl:text>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:call-template name="statusCodeList">
+            <xsl:with-param name="codes" select="$codes"/>
+            <xsl:with-param name="inError" select="true()"/>
+          </xsl:call-template>
+        </xsl:otherwise>
+      </xsl:choose>
+      <xsl:choose>
+        <xsl:when test="following-sibling::wadl:response">
+          <xsl:text>,&#x0a; </xsl:text>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:text>&#x0a; </xsl:text>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:if>
+  </xsl:template>
         </xsl:stylesheet>
