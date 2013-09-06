@@ -1,4 +1,18 @@
-        <xsl:stylesheet
+<xsl:stylesheet 
+xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns="http://docbook.org/ns/docbook" 
+xmlns:wadl="http://wadl.dev.java.net/2009/02" 
+xmlns:xhtml="http://www.w3.org/1999/xhtml" 
+xmlns:xlink="http://www.w3.org/1999/xlink"
+  xmlns:d="http://docbook.org/ns/docbook" 
+xmlns:rax="http://docs.rackspace.com/api"
+xmlns:xsdxt="http://docs.rackspacecloud.com/xsd-ext/v1.0" 
+exclude-result-prefixes="xhtml xsdxt rax d wadl" version="2.0">
+  
+  
+
+<!--<xsl:stylesheet
           xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
           xmlns:xhtml="http://www.w3.org/1999/xhtml"
           xmlns:wadl="http://wadl.dev.java.net/2009/02"
@@ -6,7 +20,7 @@
           xmlns:d="http://docbook.org/ns/docbook"
           xmlns:xsdxt="http://docs.rackspacecloud.com/xsd-ext/v1.0" 
           xmlns="http://www.w3.org/1999/xhtml"
-          exclude-result-prefixes="xhtml xsdxt rax d" version="2.0">
+          exclude-result-prefixes="xhtml xsdxt rax d" version="2.0">-->
           
           <xsl:character-map name="comment">
             <xsl:output-character character="«" string="&lt;"/>   
@@ -258,6 +272,30 @@ function showSelected(selectorId, optionId){
                     select="wadl:doc/d:*[not(@role = 'shortdesc')]|wadl:doc/xhtml:*[not(@role = 'shortdesc')]"/>
                 </xsl:if>
               </div>
+<!-- process response codes -->
+              <div class="row">
+                <div class="span16">
+                  <!-- Don't output if there are no status codes -->
+                  <xsl:if test="wadl:response[starts-with(normalize-space(@status),'2') or starts-with(normalize-space(@status),'3')]">
+                    <para>
+                      <b>Normal Response Codes:</b> 
+                        <xsl:apply-templates select="wadl:response" mode="preprocess-normal"/>
+                    </para>
+                  </xsl:if>
+                  <xsl:if test="wadl:response[not(starts-with(normalize-space(@status),'2') or starts-with(normalize-space(@status),'3'))]">
+                    <para>
+                      <b>Error Response Codes:</b> 
+                      <!--
+Put those errors that don't have a set status
+up front. These are typically general errors.
+-->
+                      <xsl:apply-templates select="wadl:response[not(@status)]" mode="preprocess-faults"/>
+                      <xsl:apply-templates select="wadl:response[@status]" mode="preprocess-faults"/>
+                    </para>
+<para/> 
+                  </xsl:if>  
+                </div>
+              </div>
               <div class="row">
                 <div class="span16">
                   <!-- Don't output if there are no params -->
@@ -459,5 +497,119 @@ function showSelected(selectorId, optionId){
               <xsl:apply-templates select="@*|node()"/>
             </xsl:copy>
           </xsl:template>
-          
+  <xsl:template match="wadl:response" mode="preprocess-normal">
+    <xsl:variable name="normStatus" select="normalize-space(@status)"/>
+    <xsl:if test="starts-with($normStatus,'2') or starts-with($normStatus,'3')">
+      <xsl:call-template name="statusCodeList">
+        <xsl:with-param name="codes" select="$normStatus"/>
+      </xsl:call-template>
+    </xsl:if>
+  </xsl:template>
+  
+  <xsl:template match="wadl:response" mode="preprocess-faults">
+    <xsl:if
+      test="(not(@status) or not(starts-with(normalize-space(@status),'2') or starts-with(normalize-space(@status),'3')))">
+      <xsl:variable name="codes">
+        <xsl:choose>
+          <xsl:when test="@status">
+            <xsl:value-of select="normalize-space(@status)"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="'400 500 &#x2026;'"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      <xsl:choose>
+        <xsl:when test="wadl:representation/@element">
+          <xsl:value-of select="substring-after((wadl:representation/@element)[1],':')"/>
+          <xsl:text> (</xsl:text>
+          <xsl:call-template name="statusCodeList">
+            <xsl:with-param name="codes" select="$codes"/>
+            <xsl:with-param name="inError" select="true()"/>
+          </xsl:call-template>
+          <xsl:text>)</xsl:text>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:call-template name="statusCodeList">
+            <xsl:with-param name="codes" select="$codes"/>
+            <xsl:with-param name="inError" select="true()"/>
+          </xsl:call-template>
+        </xsl:otherwise>
+      </xsl:choose>
+      <xsl:choose>
+        <xsl:when test="following-sibling::wadl:response">
+          <xsl:text>,&#x0a; </xsl:text>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:text>&#x0a; </xsl:text>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:if>
+  </xsl:template>
+  
+  <xsl:template name="trimUri">
+    <!-- Trims elements -->
+    <xsl:param name="trimCount"/>
+    <xsl:param name="uri"/>
+    <xsl:param name="i">0</xsl:param>
+    <xsl:choose>
+      <xsl:when test="$i &lt; $trimCount and contains($uri,'/')">
+        <xsl:call-template name="trimUri">
+          <xsl:with-param name="i" select="$i + 1"/>
+          <xsl:with-param name="trimCount">
+            <xsl:value-of select="$trimCount"/>
+          </xsl:with-param>
+          <xsl:with-param name="uri">
+            <xsl:value-of select="substring-after($uri,'/')"/>
+          </xsl:with-param>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="concat('/',$uri)"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template name="statusCodeList">
+    <xsl:param name="codes" select="'400 500 &#x2026;'"/>
+    <xsl:param name="separator" select="','"/>
+    <xsl:param name="inError" select="false()"/>
+    <xsl:variable name="code" select="substring-before($codes,' ')"/>
+    <xsl:variable name="nextCodes" select="substring-after($codes,' ')"/>
+    <xsl:choose>
+      <xsl:when test="$code != ''">
+        <xsl:call-template name="statusCode">
+          <xsl:with-param name="code" select="$code"/>
+          <xsl:with-param name="inError" select="$inError"/>
+        </xsl:call-template>
+        <xsl:text>, </xsl:text>
+        <xsl:call-template name="statusCodeList">
+          <xsl:with-param name="codes" select="$nextCodes"/>
+          <xsl:with-param name="separator" select="$separator"/>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:call-template name="statusCode">
+          <xsl:with-param name="code" select="$codes"/>
+          <xsl:with-param name="inError" select="$inError"/>
+        </xsl:call-template>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+  <xsl:template name="statusCode">
+    <xsl:param name="code" select="'200'"/>
+    <xsl:param name="inError" select="false()"/>
+    <xsl:choose>
+      <xsl:when test="$inError">
+        <errorcode>
+          <xsl:value-of select='$code'/>
+        </errorcode>
+      </xsl:when>
+      <xsl:otherwise>
+        <returnvalue>
+          <xsl:value-of select='$code'/>
+        </returnvalue>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
         </xsl:stylesheet>
