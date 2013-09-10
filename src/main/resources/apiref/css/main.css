@@ -709,7 +709,7 @@ div.floating-menu {
     position: fixed;
     left: 0;
     top: 25%;
-    width: 190px;
+    width: 200px;
     margin-top: -2.5em;
     border:1px solid #ffffff;
     z-index:100;
