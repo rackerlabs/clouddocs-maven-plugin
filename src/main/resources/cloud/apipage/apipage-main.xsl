@@ -279,12 +279,13 @@ function showSelected(selectorId, optionId){
               <b>Error Response Codes </b>&#8212; <xsl:apply-templates
                 select="wadl:response[not(@status)]"
                 mode="preprocess-faults"/>
-              <xsl:apply-templates select="wadl:response[@status]"
+              <xsl:apply-templates select="wadl:response[(@status)]"
                 mode="preprocess-faults"/>
             </p>
           </xsl:if>
         </div>
-      </div>              <div class="row">
+      </div>
+              <div class="row">
                 <div class="span16">
                   <!-- Don't output if there are no params -->
                   <xsl:if test="./wadl:request//wadl:param or parent::wadl:resource/wadl:param">
@@ -485,7 +486,8 @@ function showSelected(selectorId, optionId){
               <xsl:apply-templates select="@*|node()"/>
             </xsl:copy>
           </xsl:template>
-  <xsl:template match="wadl:response" mode="preprocess-normal">
+
+<xsl:template match="wadl:response" mode="preprocess-normal">
     <xsl:variable name="normStatus" select="normalize-space(@status)"/>
     <xsl:if
       test="starts-with($normStatus,'2') or starts-with($normStatus,'3')">
@@ -510,14 +512,15 @@ function showSelected(selectorId, optionId){
       </xsl:variable>
       <xsl:choose>
         <xsl:when test="wadl:representation/@element">
+          <xsl:variable name="statusCodes">
+            <xsl:call-template name="statusCodeList">
+              <xsl:with-param name="codes" select="$codes"/>
+              <xsl:with-param name="inError" select="true()"/>
+            </xsl:call-template>
+          </xsl:variable>
           <xsl:value-of
-            select="substring-after((wadl:representation/@element)[1],':')"/>
-          <xsl:text> (</xsl:text><xsl:call-template name="statusCodeList">
-            <xsl:with-param name="codes" select="$codes"/>
-            <xsl:with-param name="inError" select="true()"/>
-          </xsl:call-template>
-          <xsl:text>)</xsl:text>
-        </xsl:when>
+            select="substring-after((wadl:representation/@element)[1],':')"
+          /> (<xsl:value-of select="normalize-space($statusCodes)"/>)</xsl:when>
         <xsl:otherwise>
           <xsl:call-template name="statusCodeList">
             <xsl:with-param name="codes" select="$codes"/>
@@ -527,37 +530,15 @@ function showSelected(selectorId, optionId){
       </xsl:choose>
       <xsl:choose>
         <xsl:when test="following-sibling::wadl:response">
-          <xsl:text>,&#x0a; </xsl:text>
+          <xsl:text>,&#x0a;</xsl:text>
         </xsl:when>
         <xsl:otherwise>
-          <xsl:text>&#x0a; </xsl:text>
+          <xsl:text>&#x0a;</xsl:text>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:if>
   </xsl:template>
 
-  <xsl:template name="trimUri">
-    <!-- Trims elements -->
-    <xsl:param name="trimCount"/>
-    <xsl:param name="uri"/>
-    <xsl:param name="i">0</xsl:param>
-    <xsl:choose>
-      <xsl:when test="$i &lt; $trimCount and contains($uri,'/')">
-        <xsl:call-template name="trimUri">
-          <xsl:with-param name="i" select="$i + 1"/>
-          <xsl:with-param name="trimCount">
-            <xsl:value-of select="$trimCount"/>
-          </xsl:with-param>
-          <xsl:with-param name="uri">
-            <xsl:value-of select="substring-after($uri,'/')"/>
-          </xsl:with-param>
-        </xsl:call-template>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="concat('/',$uri)"/>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
 
   <xsl:template name="statusCodeList">
     <xsl:param name="codes" select="'400 500 &#x2026;'"/>
@@ -601,5 +582,6 @@ function showSelected(selectorId, optionId){
         </returnvalue>
       </xsl:otherwise>
     </xsl:choose>
-  </xsl:template>          
+  </xsl:template>
+          
         </xsl:stylesheet>
