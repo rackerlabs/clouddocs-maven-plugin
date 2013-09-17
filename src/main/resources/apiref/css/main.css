@@ -391,6 +391,7 @@ a.roundedButton {
 	color: black;
 	text-decoration: none;
 	font-size: 12.5px;
+	text-transform: ;
 	line-height: 3em;
 	background: #FFFFFF; /* old browsers */
 	background: -moz-linear-gradient(top, #FFFFFF 0%, #F3F3F3 50%, #EBEBEB 100%); /* firefox */
@@ -702,14 +703,11 @@ div.byline p.name a, div.byline p.name a:visited {
 	text-decoration: none;
 }
 
-
-
-
 div.floating-menu {
     position: fixed;
     left: 0;
     top: 25%;
-    width: 190px;
+    width: 200px;
     margin-top: -2.5em;
     border:1px solid #ffffff;
     z-index:100;
