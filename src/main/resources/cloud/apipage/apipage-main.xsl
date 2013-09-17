@@ -1,22 +1,22 @@
-        <xsl:stylesheet
+  <xsl:stylesheet
           xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
           xmlns:xhtml="http://www.w3.org/1999/xhtml"
           xmlns:wadl="http://wadl.dev.java.net/2009/02"
           xmlns:rax="http://docs.rackspace.com/api"
           xmlns:d="http://docbook.org/ns/docbook"
-          xmlns:xsdxt="http://docs.rackspacecloud.com/xsd-ext/v1.0" 
+          xmlns:xsdxt="http://docs.rackspacecloud.com/xsd-ext/v1.0"
           xmlns="http://www.w3.org/1999/xhtml"
           exclude-result-prefixes="xhtml xsdxt rax d" version="2.0">
           
           <xsl:character-map name="comment">
-            <xsl:output-character character="«" string="&lt;"/>   
+            <xsl:output-character character="«" string="&lt;"/>
             <xsl:output-character character="»" string="&gt;"/>
             <xsl:output-character character="§" string='"'/>
           </xsl:character-map>
           
-          <xsl:output 
+          <xsl:output
             method="xhtml"
-             doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN" 
+             doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
              doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
              use-character-maps="comment"
           indent="no"/>
@@ -33,7 +33,7 @@
           
           <xsl:template match="wadl:method" mode="processDetailsBtn">
             <xsl:variable name="id" select="generate-id()"/>
-            processADetailBtn(theText,'<xsl:value-of select="$id"/>_btn','\<xsl:comment><xsl:value-of select="$id"/>_btn_section START</xsl:comment>','\<xsl:comment><xsl:value-of select="$id"/>_btn_section END</xsl:comment>','<xsl:value-of select="$id"/>');           
+            processADetailBtn(theText,'<xsl:value-of select="$id"/>_btn','\<xsl:comment><xsl:value-of select="$id"/>_btn_section START</xsl:comment>','\<xsl:comment><xsl:value-of select="$id"/>_btn_section END</xsl:comment>','<xsl:value-of select="$id"/>');
             <xsl:if test="wadl:response/wadl:representation[ends-with(@mediaType,'/xml')]/wadl:doc/d:example and wadl:response/wadl:representation[ends-with(@mediaType,'/json')]/wadl:doc/d:example">
               processSelection(theText,'\<xsl:comment><xsl:value-of select="$id"/>_req_xml_selection START</xsl:comment>','\<xsl:comment><xsl:value-of select="$id"/>_req_xml_selection END</xsl:comment>','<xsl:value-of select="$id"/>','<xsl:value-of select="$id"/>_req_xml');
             </xsl:if>
@@ -45,7 +45,7 @@
           <xsl:template match="wadl:method" mode="setSectionsNSelections">
             <xsl:variable name="id" select="generate-id()"/>
             
-            $("#<xsl:value-of select="$id"/>").hide();  
+            $("#<xsl:value-of select="$id"/>").hide();
             <xsl:if test="wadl:response/wadl:representation[ends-with(@mediaType,'/xml')]/wadl:doc/d:example and wadl:response/wadl:representation[ends-with(@mediaType,'/json')]/wadl:doc/d:example">
             $("#<xsl:value-of select="$id"/>_resp_select").val("json");
             $("#<xsl:value-of select="$id"/>_resp_xml").hide();
@@ -58,14 +58,14 @@
           
           <xsl:template match="wadl:method" mode="showSelected">
             <xsl:variable name="id" select="generate-id()"/>
-            <xsl:if test="position() != 1">else </xsl:if> if(selectorId=='<xsl:value-of select="$id"/>_req_select'){         
+            <xsl:if test="position() != 1">else </xsl:if> if(selectorId=='<xsl:value-of select="$id"/>_req_select'){
             <xsl:if test="wadl:request/wadl:representation[ends-with(@mediaType,'/xml')]/wadl:doc/d:example and wadl:request/wadl:representation[ends-with(@mediaType,'/json')]/wadl:doc/d:example">
                 if(optionId=='xml'){
                   $("#<xsl:value-of select="$id"/>_req_json").hide();
                   $("#<xsl:value-of select="$id"/>_req_xml").show();
                 }else{
                   $("#<xsl:value-of select="$id"/>_req_xml").hide();
-                  $("#<xsl:value-of select="$id"/>_req_json").show();                     
+                  $("#<xsl:value-of select="$id"/>_req_json").show();
               }</xsl:if>
             } <xsl:if test="wadl:response/wadl:representation[ends-with(@mediaType,'/xml')]/wadl:doc/d:example and wadl:response/wadl:representation[ends-with(@mediaType,'/json')]/wadl:doc/d:example"> else </xsl:if><xsl:if test="wadl:response/wadl:representation[ends-with(@mediaType,'/xml')]/wadl:doc and wadl:response/wadl:representation[ends-with(@mediaType,'/json')]/wadl:doc">if(selectorId=='<xsl:value-of select="$id"/>_resp_select'){
                 if(optionId=='xml'){
@@ -73,7 +73,7 @@
                  $("#<xsl:value-of select="$id"/>_resp_xml").show();
                 }else{
                  $("#<xsl:value-of select="$id"/>_resp_xml").hide();
-                 $("#<xsl:value-of select="$id"/>_resp_json").show();                     
+                 $("#<xsl:value-of select="$id"/>_resp_json").show();
                }
               }
                  </xsl:if>
@@ -88,7 +88,7 @@
                 <!-- OpenStack Specific CSS -->
                 <link rel="stylesheet" href="apiref/css/bootstrap-screen.css" type="text/css" media="screen, projection"/>
                 <link rel="stylesheet" href="apiref/css/main.css" type="text/css" media="screen, projection, print"/>
-                <script  type="text/javascript">
+                <script type="text/javascript">
                   var _gaq = _gaq || [];
                   _gaq.push(['_setAccount', 'UA-17511903-8']);
                   _gaq.push(['_trackPageview']);
@@ -113,7 +113,7 @@ function setSectionsNSelections(){
 
 function showSelected(selectorId, optionId){
   <xsl:apply-templates select="//wadl:method" mode="showSelected"/>
-}                
+}
                 </script>
                 <script type="text/javascript" src="apiref/js/jquery-1.2.6.min.js"><xsl:comment/></script>
               </head>
@@ -127,28 +127,42 @@ function showSelected(selectorId, optionId){
                         </div>
                         <div class="span-19 last">
                           <div id="navigation">
-                            <ul id="Menu1">					   		  
-                              <li><a href="http://www.openstack.org" title="Go to the Home page">Home</a></li>		  
-                              <li><a href="http://www.openstack.org/projects" title="Go to the OpenStack Projects page" class="link">Projects</a></li>		  
+                            <ul id="Menu1">	
+                              <li><a href="http://www.openstack.org" title="Go to the Home page">Home</a></li>	
+                              <li><a href="http://www.openstack.org/projects" title="Go to the OpenStack Projects page" class="link">Projects</a></li>	
                               <li><a href="http://www.openstack.org/user-stories" title="Go to the OpenStack user stories page" class="link">User Stories</a></li>
                               <li><a href="http://www.openstack.org/community" title="Go to the Community page" class="link">Community</a></li>
                               <li><a href="http://www.openstack.org/blog" title="Go to the OpenStack Blog">Blog</a></li>
                               <li><a href="http://wiki.openstack.org/" title="Go to the OpenStack Wiki">Wiki</a></li>
-                              <li><a href="http://docs.openstack.org/" title="Go to OpenStack Documentation"  class="current">Documentation</a></li>
+                              <li><a href="http://docs.openstack.org/" title="Go to OpenStack Documentation" class="current">Documentation</a></li>
                             </ul>
-                          </div>			
+                          </div>	
                         </div>
                       </div>
                     </div>
                     <div id="body">
                       <p>&#160;</p>
-
-		      <div class="floating-menu">
-            <h3 class="subhead">Jump to...</h3>
-  			    <xsl:apply-templates select="d:chapter" mode="toc"/>
-		        <a class="color" href="#top">Top of page</a>
-		      </div>
-
+                      <div class="floating-menu">
+                        <h3 class="subhead">Jump to...</h3>
+                        <xsl:apply-templates select="d:chapter" mode="toc"/>
+                        <hr/>
+                        <a class="color" href="#top">Top of page</a>
+                        <hr/>
+                        <!-- add this later once bug 1225105 is merged -->
+                        <a class="color" href="api-ref-identity.html">Identity Service
+                          APIs</a>
+                        <a class="color" href="api-ref-compute.html">Compute API Extensions</a>
+                        <a class="color" href="api-ref-image.html">Image Service APIs</a>
+                        <a class="color" href="api-ref-blockstorage.html">Block Storage
+                          Service API</a>
+                        <a class="color" href="api-ref-networking.html">Networking API</a>
+                        <a class="color" href="api-ref-objectstorage.html">Object Storage
+                          API</a>
+                        <a class="color" href="api-ref-orchestration.html">Orchestration
+                          API</a>
+                        <hr/>
+                        <a class="color" href="api-ref.html">API Reference Home</a>
+                      </div>
                       <p>&#160;</p>
                       <xsl:apply-templates/>
                       
@@ -175,39 +189,39 @@ function showSelected(selectorId, optionId){
           <xsl:template match="d:preface|d:chapter">
             <div class="container" id="{@xml:id}">
               <h2 class="subhead"><xsl:value-of select="d:title"/> <a class="headerlink" title="Permalink to this headline" href="#{@xml:id}">¶</a></h2>
-	      <xsl:if test="d:section">
-		<form action="../">
-		  <select class="floating-menu2" onchange="window.open(this.options[this.selectedIndex].value,'_top')">
-		    <option color="#0000cc" value="">Jump to...</option>
-		    <xsl:apply-templates select="d:section" mode="form"/>
-		  </select>
-		</form>
-	      </xsl:if>
+              <xsl:if test="d:section">
+                <form action="../">
+                  <select class="floating-menu2" onchange="window.open(this.options[this.selectedIndex].value,'_top')">
+                    <option color="#0000cc" value="">Jump to...</option>
+                    <xsl:apply-templates select="d:section" mode="form"/>
+                  </select>
+                </form>
+              </xsl:if>
               <xsl:apply-templates select="node()[not(self::d:title)]"/>
             </div>
           </xsl:template>
 
           <xsl:template match="d:section" mode="form">
-	    <option color="#0000cc" value="#{@xml:id}"><xsl:value-of select="d:title"/></option>
-	  </xsl:template>
+<option color="#0000cc" value="#{@xml:id}"><xsl:value-of select="d:title"/></option>
+</xsl:template>
 
           <xsl:template match="d:section">
-            <div  id="{@xml:id}">
+            <div id="{@xml:id}">
               <h3 class="subhead"><xsl:value-of select="d:title"/> <a class="headerlink" title="Permalink to this headline" href="#{@xml:id}">¶</a></h3>
               <xsl:apply-templates select="d:*"/>
               <xsl:apply-templates select=".//wadl:method"/>
             </div>
           </xsl:template>
 
-	  <!-- toc mode -->
-	  <xsl:template match="d:preface|d:chapter" mode="toc">
-	      <a class="color" href="#{@xml:id}"><xsl:value-of select="translate(d:title,' ','&#160;')"/></a>
-	  </xsl:template>
-	  
-	  <xsl:template match="@*|node()" mode="toc">
-	    <xsl:apply-templates mode="toc"/>
-	  </xsl:template>
-	  <!-- end toc mode -->
+<!-- toc mode -->
+<xsl:template match="d:preface|d:chapter" mode="toc">
+<a class="color" href="#{@xml:id}"><xsl:value-of select="translate(d:title,' ','&#160;')"/></a>
+</xsl:template>
+
+<xsl:template match="@*|node()" mode="toc">
+<xsl:apply-templates mode="toc"/>
+</xsl:template>
+<!-- end toc mode -->
           
           <xsl:template match="wadl:method">
             <xsl:variable name="id"><xsl:value-of select="generate-id()"/></xsl:variable>
@@ -226,24 +240,24 @@ function showSelected(selectorId, optionId){
                 <xsl:choose>
                   <xsl:when test="wadl:doc//d:*[@role = 'shortdesc'] or wadl:doc//xhtml:*[@class = 'shortdesc']">
                     <xsl:apply-templates select="
-                      wadl:doc/xhtml:p[@class='shortdesc']|
-                      wadl:doc/d:para[@role = 'shortdesc']|
-                      wadl:doc//xhtml:span[@class='shortdesc']|
-                      wadl:doc//d:phrase[@role = 'shortdesc']            
-                      "/>
+wadl:doc/xhtml:p[@class='shortdesc']|
+wadl:doc/d:para[@role = 'shortdesc']|
+wadl:doc//xhtml:span[@class='shortdesc']|
+wadl:doc//d:phrase[@role = 'shortdesc']
+"/>
                   </xsl:when>
                   <xsl:otherwise>
                     <xsl:apply-templates select="
-                      wadl:doc/xhtml:*|
-                      wadl:doc/d:*|
-                      wadl:doc/text()            
-                      "/>
+wadl:doc/xhtml:*|
+wadl:doc/d:*|
+wadl:doc/text()
+"/>
                   </xsl:otherwise>
                 </xsl:choose>&#160;
               </div>
               <div class="span1">
-                <a href="#" class="btn small info" id="{$id}_btn" onclick="toggleDetailsBtn(event,'{$id}_btn','{$id}','{$id}', '{concat(ancestor::wadl:resource/@path,'-',@name)}');">detail</a> 
-              </div>              
+                <a href="#" class="btn small info" id="{$id}_btn" onclick="toggleDetailsBtn(event,'{$id}_btn','{$id}','{$id}', '{concat(ancestor::wadl:resource/@path,'-',@name)}');">detail</a>
+              </div>
             </div><xsl:comment> row </xsl:comment><xsl:text>
             </xsl:text>
             <div class="apidetail span16" id="{$id}">
@@ -258,33 +272,34 @@ function showSelected(selectorId, optionId){
                     select="wadl:doc/d:*[not(@role = 'shortdesc')]|wadl:doc/xhtml:*[not(@role = 'shortdesc')]"/>
                 </xsl:if>
               </div>
-      <!-- process response codes -->
-      <div class="row">
-        <div class="span16">
-          <!-- Don't output if there are no status codes -->
-          <xsl:if
-            test="wadl:response[starts-with(normalize-space(@status),'2') or starts-with(normalize-space(@status),'3')]">
-            <p>
-              <b>Normal Response Codes </b>&#8212;<xsl:apply-templates
-                select="wadl:response" mode="preprocess-normal"/>
-            </p>
-          </xsl:if>
-        </div>
-      </div>
-      <div class="row">
-        <div class="span16">
-          <xsl:if
-            test="wadl:response[not(starts-with(normalize-space(@status),'2') or starts-with(normalize-space(@status),'3'))]">
-            <p>
-              <b>Error Response Codes </b>&#8212; <xsl:apply-templates
-                select="wadl:response[not(@status)]"
-                mode="preprocess-faults"/>
-              <xsl:apply-templates select="wadl:response[@status]"
-                mode="preprocess-faults"/>
-            </p>
-          </xsl:if>
-        </div>
-      </div>              <div class="row">
+              <!-- process response codes -->
+              <div class="row">
+                <div class="span16">
+                  <!-- Don't output if there are no status codes -->
+                  <xsl:if
+                    test="wadl:response[starts-with(normalize-space(@status),'2') or starts-with(normalize-space(@status),'3')]">
+                    <p>
+                      <b>Normal Response Codes </b>&#8212;<xsl:apply-templates
+                        select="wadl:response" mode="preprocess-normal"/>
+                    </p>
+                  </xsl:if>
+                </div>
+              </div>
+              <div class="row">
+                <div class="span16">
+                  <xsl:if
+                    test="wadl:response[not(starts-with(normalize-space(@status),'2') or starts-with(normalize-space(@status),'3'))]">
+                    <p>
+                      <b>Error Response Codes </b>&#8212; <xsl:apply-templates
+                        select="wadl:response[not(@status)]"
+                        mode="preprocess-faults"/>
+                      <xsl:apply-templates select="wadl:response[(@status)]"
+                        mode="preprocess-faults"/>
+                    </p>
+                  </xsl:if>
+                </div>
+              </div>
+              <div class="row">
                 <div class="span16">
                   <!-- Don't output if there are no params -->
                   <xsl:if test="./wadl:request//wadl:param or parent::wadl:resource/wadl:param">
@@ -313,8 +328,8 @@ function showSelected(selectorId, optionId){
                       <thead>
                         <tr>
                           <th>Parameter</th>
-			  <th>Style</th>
-			  <th>Type</th>
+<th>Style</th>
+<th>Type</th>
                           <th>Description</th>
                         </tr>
                       </thead>
@@ -333,77 +348,77 @@ function showSelected(selectorId, optionId){
               <!-- Examples -->
               <xsl:choose>
                 <xsl:when
-                  test="wadl:request/wadl:representation[ends-with(@mediaType,'/xml') ]/wadl:doc/d:example 
-                        and wadl:request/wadl:representation[ends-with(@mediaType,'/json')]/wadl:doc/d:example">
+                  test="wadl:request/wadl:representation[ends-with(@mediaType,'/xml') ]/wadl:doc/d:example
+and wadl:request/wadl:representation[ends-with(@mediaType,'/json')]/wadl:doc/d:example">
                   <select id="{$id}_req_select"
                     onchange="toggleSelection('{$id}_req_select','{concat(ancestor::wadl:resource/@path,'-',@name)}');">
                     <option value="xml" selected="selected">Request XML</option>
                     <option value="json">Request JSON</option>
-                  </select><xsl:text>                    
+                  </select><xsl:text>
                   </xsl:text>
-                  <xsl:comment> Do not delete or edit the next comment </xsl:comment><xsl:text>                    
+                  <xsl:comment> Do not delete or edit the next comment </xsl:comment><xsl:text>
                   </xsl:text>
-                  <xsl:comment><xsl:value-of select="concat($id,'_req_xml_selection START')"/></xsl:comment><xsl:text>                    
+                  <xsl:comment><xsl:value-of select="concat($id,'_req_xml_selection START')"/></xsl:comment><xsl:text>
                   </xsl:text>
                   <div class="example" id="{concat($id,'_req_xml')}">
                     <xsl:apply-templates select="wadl:request/wadl:representation[ends-with(@mediaType,'/xml') ]/wadl:doc/d:example"/>
                   </div>
-                  <xsl:comment><xsl:value-of select="concat($id,'_req_xml_selection END')"/></xsl:comment><xsl:text>                    
+                  <xsl:comment><xsl:value-of select="concat($id,'_req_xml_selection END')"/></xsl:comment><xsl:text>
                   </xsl:text>
-                  <xsl:comment> Do not delete or edit the previous comment </xsl:comment><xsl:text>                    
+                  <xsl:comment> Do not delete or edit the previous comment </xsl:comment><xsl:text>
                   </xsl:text>
-                  <xsl:comment> Do not delete or edit the next comment </xsl:comment><xsl:text>                    
+                  <xsl:comment> Do not delete or edit the next comment </xsl:comment><xsl:text>
                   </xsl:text>
-                  <xsl:comment><xsl:value-of select="concat($id,'_req_json_selection START')"/></xsl:comment><xsl:text>                    
+                  <xsl:comment><xsl:value-of select="concat($id,'_req_json_selection START')"/></xsl:comment><xsl:text>
                   </xsl:text>
                   <div class="example" id="{concat($id,'_req_json')}">
                     <xsl:apply-templates select="wadl:request/wadl:representation[ends-with(@mediaType,'/json') ]/wadl:doc/d:example"/>
                   </div>
-                  <xsl:comment><xsl:value-of select="concat($id,'_req_json_selection END')"/></xsl:comment><xsl:text>                    
+                  <xsl:comment><xsl:value-of select="concat($id,'_req_json_selection END')"/></xsl:comment><xsl:text>
                   </xsl:text>
-                  <xsl:comment> Do not delete or edit the previous comment </xsl:comment><xsl:text>                    
+                  <xsl:comment> Do not delete or edit the previous comment </xsl:comment><xsl:text>
                   </xsl:text>
                 </xsl:when>
-                <xsl:otherwise> 
+                <xsl:otherwise>
                   <xsl:apply-templates select="wadl:request/wadl:representation/wadl:doc/d:example"/>
                 </xsl:otherwise>
               </xsl:choose>
               <xsl:choose>
                 <xsl:when
-                  test="wadl:response/wadl:representation[ends-with(@mediaType,'/xml') ]/wadl:doc/d:example 
-                  and wadl:response/wadl:representation[ends-with(@mediaType,'/json')]/wadl:doc/d:example">
+                  test="wadl:response/wadl:representation[ends-with(@mediaType,'/xml') ]/wadl:doc/d:example
+and wadl:response/wadl:representation[ends-with(@mediaType,'/json')]/wadl:doc/d:example">
                   <select id="{$id}_resp_select"
                     onchange="toggleSelection('{$id}_resp_select');">
                     <option value="xml" selected="selected">Response XML</option>
                     <option value="json">Response JSON</option>
-                  </select><xsl:text>                    
+                  </select><xsl:text>
                   </xsl:text>
                   <xsl:comment> Do not delete or edit the next comment </xsl:comment>
                   <xsl:comment><xsl:value-of select="concat($id,'_resp_xml_selection START')"/></xsl:comment>
                   <div class="example" id="{concat($id,'_resp_xml')}">
                     <xsl:apply-templates select="wadl:response/wadl:representation[ends-with(@mediaType,'/xml') ]/wadl:doc/d:example"/>
-                  </div><xsl:text>                    
+                  </div><xsl:text>
                   </xsl:text>
-                  <xsl:comment><xsl:value-of select="concat($id,'_resp_xml_selection END')"/></xsl:comment><xsl:text>                    
+                  <xsl:comment><xsl:value-of select="concat($id,'_resp_xml_selection END')"/></xsl:comment><xsl:text>
                   </xsl:text>
-                  <xsl:comment> Do not delete or edit the previous comment </xsl:comment><xsl:text>                    
+                  <xsl:comment> Do not delete or edit the previous comment </xsl:comment><xsl:text>
                   </xsl:text>
-                  <xsl:comment> Do not delete or edit the next comment </xsl:comment><xsl:text>                    
+                  <xsl:comment> Do not delete or edit the next comment </xsl:comment><xsl:text>
                   </xsl:text>
-                  <xsl:comment><xsl:value-of select="concat($id,'_resp_json_selection START')"/></xsl:comment><xsl:text>                    
+                  <xsl:comment><xsl:value-of select="concat($id,'_resp_json_selection START')"/></xsl:comment><xsl:text>
                   </xsl:text>
                   <div class="example" id="{concat($id,'_resp_json')}">
                     <xsl:apply-templates select="wadl:response/wadl:representation[ends-with(@mediaType,'/json') ]/wadl:doc/d:example"/>
                   </div>
-                  <xsl:comment><xsl:value-of select="concat($id,'_resp_json_selection END')"/></xsl:comment><xsl:text>                    
+                  <xsl:comment><xsl:value-of select="concat($id,'_resp_json_selection END')"/></xsl:comment><xsl:text>
                   </xsl:text>
-                  <xsl:comment> Do not delete or edit the previous comment </xsl:comment><xsl:text>                    
+                  <xsl:comment> Do not delete or edit the previous comment </xsl:comment><xsl:text>
                   </xsl:text>
                 </xsl:when>
-                <xsl:otherwise> 
+                <xsl:otherwise>
                   <xsl:apply-templates select="wadl:response/wadl:representation/wadl:doc/d:example"/>
                 </xsl:otherwise>
-              </xsl:choose>      
+              </xsl:choose>
               
                <!-- we allow no response text and we dont have a 200 level response with a representation -->
                 <xsl:choose>
@@ -473,8 +488,8 @@ function showSelected(selectorId, optionId){
           <xsl:template match="wadl:param" mode="param2tr">
             <tr>
               <td><xsl:value-of select="@name"/><xsl:if test="not(@required = 'true') and not(@style = 'template') and not(@style = 'matrix')"> (Optional)</xsl:if></td>
-	      <td><xsl:value-of select="@style"/></td>
-	      <td><xsl:value-of select="@type"/></td>
+<td><xsl:value-of select="@style"/></td>
+<td><xsl:value-of select="@type"/></td>
               <td><xsl:apply-templates select="./wadl:doc/*|./wadl:doc/text()"/></td>
             </tr>
           </xsl:template>
@@ -485,121 +500,100 @@ function showSelected(selectorId, optionId){
               <xsl:apply-templates select="@*|node()"/>
             </xsl:copy>
           </xsl:template>
-  <xsl:template match="wadl:response" mode="preprocess-normal">
-    <xsl:variable name="normStatus" select="normalize-space(@status)"/>
-    <xsl:if
-      test="starts-with($normStatus,'2') or starts-with($normStatus,'3')">
-      <xsl:call-template name="statusCodeList">
-        <xsl:with-param name="codes" select="$normStatus"/>
-      </xsl:call-template>
-    </xsl:if>
-  </xsl:template>
-
-  <xsl:template match="wadl:response" mode="preprocess-faults">
-    <xsl:if
-      test="(not(@status) or not(starts-with(normalize-space(@status),'2') or starts-with(normalize-space(@status),'3')))">
-      <xsl:variable name="codes">
-        <xsl:choose>
-          <xsl:when test="@status">
-            <xsl:value-of select="normalize-space(@status)"/>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:value-of select="'400 500 &#x2026;'"/>
-          </xsl:otherwise>
-        </xsl:choose>
-      </xsl:variable>
-      <xsl:choose>
-        <xsl:when test="wadl:representation/@element">
-          <xsl:value-of
-            select="substring-after((wadl:representation/@element)[1],':')"/>
-          <xsl:text> (</xsl:text><xsl:call-template name="statusCodeList">
-            <xsl:with-param name="codes" select="$codes"/>
-            <xsl:with-param name="inError" select="true()"/>
-          </xsl:call-template>
-          <xsl:text>)</xsl:text>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:call-template name="statusCodeList">
-            <xsl:with-param name="codes" select="$codes"/>
-            <xsl:with-param name="inError" select="true()"/>
-          </xsl:call-template>
-        </xsl:otherwise>
-      </xsl:choose>
-      <xsl:choose>
-        <xsl:when test="following-sibling::wadl:response">
-          <xsl:text>,&#x0a; </xsl:text>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:text>&#x0a; </xsl:text>
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:if>
-  </xsl:template>
-
-  <xsl:template name="trimUri">
-    <!-- Trims elements -->
-    <xsl:param name="trimCount"/>
-    <xsl:param name="uri"/>
-    <xsl:param name="i">0</xsl:param>
-    <xsl:choose>
-      <xsl:when test="$i &lt; $trimCount and contains($uri,'/')">
-        <xsl:call-template name="trimUri">
-          <xsl:with-param name="i" select="$i + 1"/>
-          <xsl:with-param name="trimCount">
-            <xsl:value-of select="$trimCount"/>
-          </xsl:with-param>
-          <xsl:with-param name="uri">
-            <xsl:value-of select="substring-after($uri,'/')"/>
-          </xsl:with-param>
-        </xsl:call-template>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:value-of select="concat('/',$uri)"/>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
-  <xsl:template name="statusCodeList">
-    <xsl:param name="codes" select="'400 500 &#x2026;'"/>
-    <xsl:param name="separator" select="','"/>
-    <xsl:param name="inError" select="false()"/>
-    <xsl:variable name="code" select="substring-before($codes,' ')"/>
-    <xsl:variable name="nextCodes"
-      select="substring-after($codes,' ')"/>
-    <xsl:choose>
-      <xsl:when test="$code != ''">
-        <xsl:call-template name="statusCode">
-          <xsl:with-param name="code" select="$code"/>
-          <xsl:with-param name="inError" select="$inError"/>
-        </xsl:call-template>
-        <xsl:text>, </xsl:text>
-        <xsl:call-template name="statusCodeList">
-          <xsl:with-param name="codes" select="$nextCodes"/>
-          <xsl:with-param name="separator" select="$separator"/>
-        </xsl:call-template>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:call-template name="statusCode">
-          <xsl:with-param name="code" select="$codes"/>
-          <xsl:with-param name="inError" select="$inError"/>
-        </xsl:call-template>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-  <xsl:template name="statusCode">
-    <xsl:param name="code" select="'200'"/>
-    <xsl:param name="inError" select="false()"/>
-    <xsl:choose>
-      <xsl:when test="$inError">
-        <errorcode>
-          <xsl:value-of select="$code"/>
-        </errorcode>
-      </xsl:when>
-      <xsl:otherwise>
-        <returnvalue>
-          <xsl:value-of select="$code"/>
-        </returnvalue>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>          
+          <xsl:template match="wadl:response" mode="preprocess-normal">
+            <xsl:variable name="normStatus" select="normalize-space(@status)"/>
+            <xsl:if
+              test="starts-with($normStatus,'2') or starts-with($normStatus,'3')">
+              <xsl:call-template name="statusCodeList">
+                <xsl:with-param name="codes" select="$normStatus"/>
+              </xsl:call-template>
+            </xsl:if>
+          </xsl:template>
+          
+          <xsl:template match="wadl:response" mode="preprocess-faults">
+            <xsl:if
+              test="(not(@status) or not(starts-with(normalize-space(@status),'2') or starts-with(normalize-space(@status),'3')))">
+              <xsl:variable name="codes">
+                <xsl:choose>
+                  <xsl:when test="@status">
+                    <xsl:value-of select="normalize-space(@status)"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:value-of select="'400 500 &#x2026;'"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:variable>
+              <xsl:choose>
+                <xsl:when test="wadl:representation/@element">
+                  <xsl:variable name="statusCodes">
+                    <xsl:call-template name="statusCodeList">
+                      <xsl:with-param name="codes" select="$codes"/>
+                      <xsl:with-param name="inError" select="true()"/>
+                    </xsl:call-template>
+                  </xsl:variable>
+                  <xsl:value-of
+                    select="substring-after((wadl:representation/@element)[1],':')"
+                  /> (<xsl:value-of select="normalize-space($statusCodes)"/>)</xsl:when>
+                <xsl:otherwise>
+                  <xsl:call-template name="statusCodeList">
+                    <xsl:with-param name="codes" select="$codes"/>
+                    <xsl:with-param name="inError" select="true()"/>
+                  </xsl:call-template>
+                </xsl:otherwise>
+              </xsl:choose>
+              <xsl:choose>
+                <xsl:when test="following-sibling::wadl:response">
+                  <xsl:text>,&#x0a;</xsl:text>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:text>&#x0a;</xsl:text>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:if>
+          </xsl:template>
+          
+          
+          <xsl:template name="statusCodeList">
+            <xsl:param name="codes" select="'400 500 &#x2026;'"/>
+            <xsl:param name="separator" select="','"/>
+            <xsl:param name="inError" select="false()"/>
+            <xsl:variable name="code" select="substring-before($codes,' ')"/>
+            <xsl:variable name="nextCodes"
+              select="substring-after($codes,' ')"/>
+            <xsl:choose>
+              <xsl:when test="$code != ''">
+                <xsl:call-template name="statusCode">
+                  <xsl:with-param name="code" select="$code"/>
+                  <xsl:with-param name="inError" select="$inError"/>
+                </xsl:call-template>
+                <xsl:text>, </xsl:text>
+                <xsl:call-template name="statusCodeList">
+                  <xsl:with-param name="codes" select="$nextCodes"/>
+                  <xsl:with-param name="separator" select="$separator"/>
+                </xsl:call-template>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:call-template name="statusCode">
+                  <xsl:with-param name="code" select="$codes"/>
+                  <xsl:with-param name="inError" select="$inError"/>
+                </xsl:call-template>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:template>
+          <xsl:template name="statusCode">
+            <xsl:param name="code" select="'200'"/>
+            <xsl:param name="inError" select="false()"/>
+            <xsl:choose>
+              <xsl:when test="$inError">
+                <errorcode>
+                  <xsl:value-of select="$code"/>
+                </errorcode>
+              </xsl:when>
+              <xsl:otherwise>
+                <returnvalue>
+                  <xsl:value-of select="$code"/>
+                </returnvalue>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:template>
         </xsl:stylesheet>
